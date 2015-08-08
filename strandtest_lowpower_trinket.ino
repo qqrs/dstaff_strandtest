@@ -1,7 +1,13 @@
 #include <Adafruit_NeoPixel.h>
 
-#define PIN 0
+#define NEOPIXEL_PIN 0
 #define FULL_ON 191
+
+#define BUT_PIN 2
+
+unsigned long dbtime;       // debounce time
+
+#define adelay(ms)  if (digitalRead(BUT_PIN) == LOW && millis() - dbtime > 300) { dbtime = millis(); return; } else { delay(ms); }
 
 // Parameter 1 = number of pixels in strip
 // Parameter 2 = Arduino pin number (most are valid)
@@ -10,7 +16,7 @@
 //   NEO_KHZ400  400 KHz (classic 'v1' (not v2) FLORA pixels, WS2811 drivers)
 //   NEO_GRB     Pixels are wired for GRB bitstream (most NeoPixel products)
 //   NEO_RGB     Pixels are wired for RGB bitstream (v1 FLORA pixels, not v2)
-Adafruit_NeoPixel strip = Adafruit_NeoPixel(60, PIN, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel strip = Adafruit_NeoPixel(60, NEOPIXEL_PIN, NEO_GRB + NEO_KHZ800);
 
 // IMPORTANT: To reduce NeoPixel burnout risk, add 1000 uF capacitor across
 // pixel power leads, add 300 - 500 Ohm resistor on first pixel's data input
@@ -18,6 +24,11 @@ Adafruit_NeoPixel strip = Adafruit_NeoPixel(60, PIN, NEO_GRB + NEO_KHZ800);
 // on a live circuit...if you must, connect GND first.
 
 void setup() {
+  pinMode(BUT_PIN, INPUT_PULLUP);
+  pinMode(1, OUTPUT);
+  digitalWrite(1, LOW);           // GND for button pin
+  dbtime = millis();
+
   strip.begin();
   strip.show(); // Initialize all pixels to 'off'
 }
@@ -42,7 +53,7 @@ void colorWipe(uint32_t c, uint8_t wait) {
   for(uint16_t i=0; i<strip.numPixels(); i++) {
       strip.setPixelColor(i, c);
       strip.show();
-      delay(wait);
+      adelay(wait);
   }
 }
 
@@ -54,7 +65,7 @@ void rainbow(uint8_t wait) {
       strip.setPixelColor(i, Wheel((i+j) & 127));
     }
     strip.show();
-    delay(wait);
+    adelay(wait);
   }
 }
 
@@ -67,7 +78,7 @@ void rainbowCycle(uint8_t wait) {
       strip.setPixelColor(i, Wheel(((i * 128 / strip.numPixels()) + j) & 127));
     }
     strip.show();
-    delay(wait);
+    adelay(wait);
   }
 }
 
@@ -80,7 +91,7 @@ void theaterChase(uint32_t c, uint8_t wait) {
       }
       strip.show();
      
-      delay(wait);
+      adelay(wait);
      
       for (int i=0; i < strip.numPixels(); i=i+3) {
         strip.setPixelColor(i+q, 0);        //turn every third pixel off
@@ -98,7 +109,7 @@ void theaterChaseRainbow(uint8_t wait) {
         }
         strip.show();
        
-        delay(wait);
+        adelay(wait);
        
         for (int i=0; i < strip.numPixels(); i=i+3) {
           strip.setPixelColor(i+q, 0);        //turn every third pixel off
