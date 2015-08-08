@@ -34,11 +34,10 @@ void setup() {
 }
 
 void loop() {
-  // Some example procedures showing how to display to the pixels:
   colorWipe(strip.Color(FULL_ON, 0, 0), 50); // Red
   colorWipe(strip.Color(0, FULL_ON, 0), 50); // Green
   colorWipe(strip.Color(0, 0, FULL_ON), 50); // Blue
-  // Send a theater pixel chase in...
+
   theaterChase(strip.Color(127, 127, 127), 50); // White
   theaterChase(strip.Color(127,   0,   0), 50); // Red
   theaterChase(strip.Color(  0,   0, 127), 50); // Blue
@@ -50,16 +49,19 @@ void loop() {
 
 // Fill the dots one after the other with a color
 void colorWipe(uint32_t c, uint8_t wait) {
+ while (1) {
   for(uint16_t i=0; i<strip.numPixels(); i++) {
       strip.setPixelColor(i, c);
       strip.show();
       adelay(wait);
   }
+ }
 }
 
 void rainbow(uint8_t wait) {
   uint16_t i, j;
 
+ while (1) {
   for(j=0; j<128; j++) {
     for(i=0; i<strip.numPixels(); i++) {
       strip.setPixelColor(i, Wheel((i+j) & 127));
@@ -67,12 +69,14 @@ void rainbow(uint8_t wait) {
     strip.show();
     adelay(wait);
   }
+ }
 }
 
 // Slightly different, this makes the rainbow equally distributed throughout
 void rainbowCycle(uint8_t wait) {
   uint16_t i, j;
 
+ while (1) {
   for(j=0; j<128*5; j++) { // 5 cycles of all colors on wheel
     for(i=0; i< strip.numPixels(); i++) {
       strip.setPixelColor(i, Wheel(((i * 128 / strip.numPixels()) + j) & 127));
@@ -80,10 +84,12 @@ void rainbowCycle(uint8_t wait) {
     strip.show();
     adelay(wait);
   }
+ }
 }
 
 //Theatre-style crawling lights.
 void theaterChase(uint32_t c, uint8_t wait) {
+ while (1) {
   for (int j=0; j<10; j++) {  //do 10 cycles of chasing
     for (int q=0; q < 3; q++) {
       for (int i=0; i < strip.numPixels(); i=i+3) {
@@ -98,10 +104,12 @@ void theaterChase(uint32_t c, uint8_t wait) {
       }
     }
   }
+ }
 }
 
 //Theatre-style crawling lights with rainbow effect
 void theaterChaseRainbow(uint8_t wait) {
+ while (1) {
   for (int j=0; j < 128; j++) {     // cycle all 256 colors in the wheel
     for (int q=0; q < 3; q++) {
         for (int i=0; i < strip.numPixels(); i=i+3) {
@@ -116,6 +124,7 @@ void theaterChaseRainbow(uint8_t wait) {
         }
     }
   }
+ }
 }
 
 // Input a value 0 to 255 to get a color value.
