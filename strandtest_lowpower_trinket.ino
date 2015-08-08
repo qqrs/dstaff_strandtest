@@ -46,9 +46,9 @@ void loop() {
   theaterChase(strip.Color(127,   0,   0), 50); // Red
   theaterChase(strip.Color(  0,   0, 127), 50); // Blue
 
-  wipeUp(strip.Color(0, FULL_ON, 0), 40); // Green
-  wipeUp(strip.Color(0, 0, FULL_ON), 20); // Blue
-  wipeUp(strip.Color(FULL_ON, 0, 0), 20); // Red
+  colorWipeUpDown(strip.Color(0, FULL_ON, 0), 40); // Green
+  colorWipeUpDown(strip.Color(0, 0, FULL_ON), 20); // Blue
+  colorWipeUpDown(strip.Color(FULL_ON, 0, 0), 20); // Red
 }
 
 // Fill the dots one after the other with a color
@@ -65,16 +65,28 @@ void colorWipe(uint32_t c, uint8_t wait) {
 */
 
 // Fill the dots one after the other with a color
-void wipeUp(uint32_t c, uint8_t wait) {
+void colorWipeUpDown(uint32_t c, uint8_t wait) {
+ uint32_t c_off = strip.Color(0, 0, 0);
 
  while (1) {
   strip.clear();
   strip.show();
 
-  uint16_t j = strip.numPixels() - 1;
-  for(uint16_t i = 0; i<= j; i++, j--) {
+  uint16_t max = strip.numPixels();
+  uint16_t j = strip.numPixels() / 2;
+  uint16_t i = j - 1;
+  for(; i >= 0 && j < max; i--, j++) {
       strip.setPixelColor(i, c);
       strip.setPixelColor(j, c);
+      strip.show();
+      adelay(wait);
+  }
+
+  j = strip.numPixels() - 1;
+  i = 0;
+  for(; i <= j; i++, j--) {
+      strip.setPixelColor(i, c_off);
+      strip.setPixelColor(j, c_off);
       strip.show();
       adelay(wait);
   }
