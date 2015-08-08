@@ -38,17 +38,17 @@ void loop() {
   //colorWipe(strip.Color(0, FULL_ON, 0), 50); // Green
   //colorWipe(strip.Color(0, 0, FULL_ON), 50); // Blue
 
-  wipeUp(strip.Color(0, FULL_ON, 0), 40); // Green
-  wipeUp(strip.Color(0, 0, FULL_ON), 20); // Blue
-  wipeUp(strip.Color(FULL_ON, 0, 0), 20); // Red
+  rainbow(20);
+  rainbowCycle(20);
+  theaterChaseRainbow(50);
 
   theaterChase(strip.Color(127, 127, 127), 50); // White
   theaterChase(strip.Color(127,   0,   0), 50); // Red
   theaterChase(strip.Color(  0,   0, 127), 50); // Blue
 
-  rainbow(20);
-  rainbowCycle(20);
-  theaterChaseRainbow(50);
+  wipeUp(strip.Color(0, FULL_ON, 0), 40); // Green
+  wipeUp(strip.Color(0, 0, FULL_ON), 20); // Blue
+  wipeUp(strip.Color(FULL_ON, 0, 0), 20); // Red
 }
 
 // Fill the dots one after the other with a color
